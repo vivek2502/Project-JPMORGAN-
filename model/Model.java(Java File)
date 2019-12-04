@@ -16,6 +16,8 @@ public class Model {
 	private String select="SELECT * FROM ABCBANK WHERE USERID=? AND PASSWORD=?";
 	private String sql="SELECT * FROM ABCBANK WHERE ACCNO=?";
 	private String update="UPDATE ABCBANK SET PASSWORD=? WHERE ACCNO=? AND PASSWORD=?";
+	private String deductBal="UPDATE ABCBANK SET BALANCE=BALANCE-? WHERE ACCNO=?";
+	private String addBal="UPDATE ABCBANK SET BALANCE=BALANCE+? WHERE ACCNO=?";
 	
 	private Connection con=null;
 	private PreparedStatement pstmt=null;
@@ -65,9 +67,6 @@ public class Model {
 		this.email = email;
 	}
 	
-	
-	
-	
 	public Model()
 	{
 		try
@@ -95,7 +94,7 @@ public class Model {
 			else 
 			{
 				return false;
-			}
+			}		
 	}
 	public boolean checkBalance() throws Exception
 	{
@@ -126,5 +125,39 @@ public class Model {
 		else 
 			return false;
 	}
-
+	
+	public boolean transfer1(int rvcno,int amount) throws SQLException
+	{
+		pstmt=con.prepareStatement(deductBal);
+		pstmt.setInt(1,amount);
+		pstmt.setInt(2,accno);
+		int row=pstmt.executeUpdate();
+		if(row!=0)
+		{
+			pstmt=con.prepareStatement("INSERT INTO STATEMENT(ACCNO,DEBIT) VALUES (?,?)");
+			pstmt.setInt(1,accno);
+			pstmt.setInt(2,amount);
+			pstmt.executeUpdate();
+			return true;	
+		}
+		else 
+			return false;
+	}
+	public boolean transfer2(int rvcno,int amount)throws SQLException
+	{
+		pstmt=con.prepareStatement(addBal);
+		pstmt.setInt(1,amount);
+		pstmt.setInt(2,rvcno);
+		int row=pstmt.executeUpdate();
+		if(row!=0)
+		{
+			pstmt=con.prepareStatement("INSERT INTO STATEMENT(ACCNO,CREDIT) VALUES (?,?)");
+			pstmt.setInt(1,rvcno);
+			pstmt.setInt(2,amount);
+			pstmt.executeUpdate();
+			return true;
+		}
+		else 
+			return false;
+	}
 }
