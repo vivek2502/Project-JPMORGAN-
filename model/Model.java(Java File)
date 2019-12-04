@@ -14,6 +14,8 @@ public class Model {
 	private String password="ORACLE";
 	
 	private String select="SELECT * FROM ABCBANK WHERE USERID=? AND PASSWORD=?";
+	private String sql="SELECT * FROM ABCBANK WHERE ACCNO=?";
+	private String update="UPDATE ABCBANK SET PASSWORD=? WHERE ACCNO=? AND PASSWORD=?";
 	
 	private Connection con=null;
 	private PreparedStatement pstmt=null;
@@ -62,6 +64,10 @@ public class Model {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	
+	
+	
 	public Model()
 	{
 		try
@@ -91,4 +97,34 @@ public class Model {
 				return false;
 			}
 	}
+	public boolean checkBalance() throws Exception
+	{
+		pstmt=con.prepareStatement(sql);
+		pstmt.setInt(1,accno);
+		res=pstmt.executeQuery();
+			if(res.next()==true)
+			{
+				balance=res.getInt(5);
+				return true;
+			}
+			else 
+			{
+				return false;
+			}
+	}
+	public boolean changePassword(String npwd) throws SQLException
+	{
+		pstmt=con.prepareStatement(update);
+		pstmt.setString(1,npwd);
+		pstmt.setInt(2,accno);
+		pstmt.setString(3,pwd);
+		int row=pstmt.executeUpdate();
+		if(row!=0)
+		{
+			return true;
+		}
+		else 
+			return false;
+	}
+
 }
