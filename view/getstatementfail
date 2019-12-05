@@ -1,0 +1,32 @@
+<html>
+<head>
+<title>ERROR</title>
+<style>  
+   body
+   	{
+   		background-color:white;  
+   	} 
+   	marquee
+   	{
+   		font-size: 40px;
+        font-weight: 200;
+        color: black;
+        font-family: sans-serif;
+        width: 100%;
+        padding: 1px 0 ;
+        background-color:lightblue;
+   	}	
+    a
+    {
+    	font-size: 20px;
+        font-weight: 200;
+        color: blue;
+        font-family: sans-serif;
+    }        
+</style>
+</head>
+<body>
+<marquee behavior="alternate" direction="right" scrollamount="10">Error</marquee><br><br>
+<a href="home.html" >back to home</a><br>
+</body>
+</html>
