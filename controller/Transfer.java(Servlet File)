@@ -22,7 +22,7 @@ public class Transfer extends HttpServlet {
 				if(modle.transfer1((int)Integer.parseInt(request.getParameter("rcvno")),(int)Integer.parseInt(request.getParameter("amount"))))
 				{
 					if(modle.transfer2((int)Integer.parseInt(request.getParameter("rcvno")),(int)Integer.parseInt(request.getParameter("amount"))))
-						response.sendRedirect("/JPMORGAN/transferSuccess.html");
+						response.sendRedirect("/JPMORGAN/transfersuccess.html");
 					else
 						response.sendRedirect("/JPMORGAN/transferfail.html");
 				}	
