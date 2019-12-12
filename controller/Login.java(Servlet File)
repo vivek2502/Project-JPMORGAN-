@@ -21,7 +21,7 @@ public class Login extends HttpServlet {
 				if(value)
 				{
 					HttpSession session=request.getSession(true);
-					session.setAttribute("name",modle.getAccno());
+					session.setAttribute("accno",modle.getAccno());
 					
 					response.sendRedirect("/JPMORGAN/home.html");
 				}	
@@ -33,4 +33,5 @@ public class Login extends HttpServlet {
 				e.printStackTrace();
 			}
 	}
+
 }
