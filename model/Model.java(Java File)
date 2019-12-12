@@ -1,11 +1,19 @@
 package model;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.servlet.ServletOutputStream;
 
 import oracle.jdbc.driver.OracleDriver;
 
@@ -90,6 +98,7 @@ public class Model {
 			if(res.next()==true)
 			{
 				accno=res.getInt(2);
+				
 				return true;
 			}
 			else 
@@ -184,5 +193,42 @@ public class Model {
 			arraylistdebit.add(res.getInt("DEBIT"));
 		}
 		return arraylistdebit;
+	}
+	public boolean setDetails(String photo,String sign,String aadhar,String pan) throws SQLException, IOException
+	{
+			FileInputStream fin ;
+			 
+			pstmt=con.prepareStatement("INSERT INTO LOAN_DETAILS (ACCNO,PHOTO,SIGN,AADHAR,PAN) VALUES(?,?,?,?,?)");
+			pstmt.setInt(1,accno);
+			fin = new FileInputStream(photo);
+			pstmt.setBinaryStream(2, fin,fin.available());
+			fin = new FileInputStream(sign);
+			pstmt.setBinaryStream(3, fin,fin.available());
+			fin = new FileInputStream(aadhar);
+			pstmt.setBinaryStream(4, fin,fin.available());
+			fin = new FileInputStream(pan);
+			pstmt.setBinaryStream(5, fin,fin.available());
+			int a=pstmt.executeUpdate();
+				if(a!=0)
+				{	  
+					return true;
+				}
+				else
+				{					
+					return false;
+				}				
+		}
+	public boolean forgotPassword(String npwd) throws SQLException
+	{
+		pstmt=con.prepareStatement("UPDATE ABCBANK SET PASSWORD=? WHERE EMAIL=?");
+		pstmt.setString(1,npwd);
+		pstmt.setString(2,email);
+		int row=pstmt.executeUpdate();
+		if(row!=0)
+		{
+			return true;	
+		}
+		else 
+			return false;
 	}
 }
