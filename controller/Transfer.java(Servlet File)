@@ -28,7 +28,6 @@ public class Transfer extends HttpServlet {
 				}	
 				else
 				{
-					System.out.println("Hjdhjshfj");
 					response.sendRedirect("/JPMORGAN/transferfail.html");
 				}
 				
